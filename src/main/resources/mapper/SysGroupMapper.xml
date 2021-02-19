@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.SysGroupMapper" >
+
+    <resultMap id="groupResultMap" type="com.example.demo.entity.SysGroup" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="creation_time" property="creationTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="groupParam">
+        gr.id,
+        gr.name,
+        gr.code,
+        gr.parent_id,
+        gr.remark,
+        gr.creation_time
+    </sql>
+
+    <select id="selectByUserId" resultMap="groupResultMap" resultType="java.lang.Integer">
+        SELECT
+            <include refid="groupParam"/>
+        FROM
+            sys_user us
+        JOIN sys_group gr ON us.group_id = gr.id
+        <where>
+            <if test="userId != null">
+                us.id = #{userId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

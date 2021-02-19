@@ -1,0 +1,205 @@
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_group(
+id INT PRIMARY KEY auto_increment COMMENT '主键自增id',
+name VARCHAR(50) NOT NULL COMMENT '菜单名称',
+code VARCHAR(50) NOT NULL COMMENT '简称名称',
+parent_id INT NOT NULL DEFAULT 0 COMMENT '父节点',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间',
+remark VARCHAR(100) COMMENT '备注'
+)COMMENT='公司组表';
+
+TRUNCATE sys_group;
+
+INSERT INTO sys_group(name,code,parent_id)
+			 VALUES ('雅峰总部','yfzb',0),
+					('广州雅峰分公司','gzyf',1);
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_user(
+id INT PRIMARY KEY auto_increment COMMENT '主键自增id',
+login_name VARCHAR(50) NOT NULL COMMENT '登录用户名',
+login_pw VARCHAR(50) NOT NULL COMMENT '登录密码',
+name VARCHAR(50) NOT NULL COMMENT '用户名称',
+group_id INT NOT NULL COMMENT '公司组id',
+mobile VARCHAR(50) COMMENT '手机号',
+email VARCHAR(50) COMMENT '邮箱',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间',
+remark VARCHAR(100) COMMENT '备注'
+)COMMENT='用户信息';
+
+TRUNCATE sys_user;
+
+INSERT INTO sys_user(login_name,login_pw,name,group_id)
+			 VALUES ('lili','lili','丘女士',1),
+					('ivy','ivy','邹女士',2),
+					('sofia','sofia','陈女士',2),
+					('user','user','路人',2);
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_role(
+id int PRIMARY KEY auto_increment COMMENT '主键自增id',
+name VARCHAR(50) NOT NULL COMMENT '角色名称',
+code VARCHAR(50) COMMENT '角色编码',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间',
+remark VARCHAR(100) COMMENT '备注'
+)COMMENT='角色表';
+
+TRUNCATE sys_role;
+
+INSERT INTO sys_role(name,code)
+			 VALUES ('管理员','admin'),
+					('超级用户','superuser'),
+					('普通用户','user');
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_permission(
+id int PRIMARY KEY auto_increment COMMENT '主键自增id',
+name VARCHAR(50) NOT NULL COMMENT '权限名称',
+code VARCHAR(50) COMMENT '权限编码',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间',
+remark VARCHAR(100) COMMENT '备注'
+)COMMENT='权限表';
+
+TRUNCATE sys_permission;
+
+INSERT INTO sys_permission(name,code)
+			 VALUES ('设置预警权限','selectWarning'),
+					('查看均值','selectMean'),
+				    ('查看最大值','selectMax'),
+					('查看最小值','selectMin'),
+					('查看实时数据','selectNeal'),
+					('导入','import'),
+					('导出','export'),
+					('添加设置','addEquipment'),
+					('设置设备','setEquipment'),
+					('用户信息','selectUser');
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_module(
+id INT PRIMARY KEY auto_increment COMMENT '主键自增id',
+name VARCHAR(50) NOT NULL COMMENT '模块名称',
+code VARCHAR(50) NOT NULL COMMENT '简称名称',
+parent_id INT NOT NULL DEFAULT 0 COMMENT '父节点',
+url VARCHAR(100) COMMENT '访问地址',
+is_show BIGINT(1) DEFAULT 1 COMMENT '0:不显示，1:显示',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间',
+remark VARCHAR(100) COMMENT '备注'
+)COMMENT='模块表';
+
+TRUNCATE sys_module;
+
+INSERT INTO sys_module(name,code,parent_id)
+			 VALUES ('设备模块','sbmk',0),
+					('设备管理','sbgl',1),
+					('设备详情','sbgl',1),
+					('用户模块','yhmk',0),
+					('用户信息','yhxx',4);
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_user_role(
+id INT PRIMARY KEY auto_increment COMMENT '主键自增id',
+user_id INT NOT NULL COMMENT '用户表id',
+role_id INT NOT NULL COMMENT '角色id',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间'
+)COMMENT='用户角色关联表';
+
+TRUNCATE sys_user_role;
+
+INSERT INTO sys_user_role(user_id,role_id)
+			 VALUES (1,1),
+					(2,2),
+					(2,3),
+					(3,2),
+					(3,3),
+					(4,3);
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_role_perm(
+id INT PRIMARY KEY auto_increment COMMENT '主键自增id',
+role_id INT NOT NULL COMMENT '角色id',
+perm_id INT NOT NULL COMMENT '权限id',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间'
+)COMMENT='角色权限关联表';
+
+TRUNCATE sys_role_perm;
+
+INSERT INTO sys_role_perm(role_id,perm_id)
+			 VALUES (1,1),
+					(1,2),
+					(1,2),
+					(1,3),
+					(1,4),
+					(1,5),
+					(1,6),
+					(1,7),
+					(1,8),
+					(1,9),
+					(1,10),
+					(2,1),
+					(2,5),
+					(2,6),
+					(2,7),
+					(2,8),
+					(2,9),
+					(2,10),
+					(3,7),
+					(3,10);
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE sys_role_module(
+id INT PRIMARY KEY auto_increment COMMENT '主键自增id',
+role_id INT NOT NULL COMMENT '角色id',
+module_id INT NOT NULL COMMENT '菜单id',
+creation_time TIMESTAMP DEFAULT now() COMMENT '创建时间'
+)COMMENT='角色菜单关联表';
+
+TRUNCATE sys_role_module;
+
+INSERT INTO sys_role_module(role_id,module_id)
+			 VALUES (1,1),
+					(1,2),
+					(1,3),
+					(1,4),
+					(1,5),
+					(2,1),
+					(2,2),
+					(2,3),
+					(2,4),
+					(2,5),
+					(3,4),
+					(3,5);
+
+------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE `test_login`.`sys_user`
+ADD COLUMN `is_pay` char(1) NOT NULL DEFAULT 0 COMMENT '是否为付费用户，0为未付费，1为付费' AFTER `remark`,
+ADD COLUMN `level_id` int(11) NULL COMMENT '级别表主键id' AFTER `is_paying`;
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `sys_level`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `name` varchar(50) NOT NULL COMMENT '等级名称',
+  `level_code` varchar(5) NOT NULL COMMENT '付费用户等级编号',
+  PRIMARY KEY (`id`)
+) COMMENT = '付费用户级别表';
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `sys_user_perm`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '用户id',
+  `perm_id` int NOT NULL COMMENT '权限id',
+  PRIMARY KEY (`id`)
+) COMMENT = '用户权限关联表';
+
+------------------------------------------------------------------------------------------------------------------------
+
+

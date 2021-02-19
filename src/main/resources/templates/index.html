@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>成功</title>
+    <link rel="shortcut icon"  href="#"/>
+    <script type="text/javascript" src="../jquery-3.4.1.js" charset="UTF-8"></script>
+    <script type="javascript" language="javascript" src="../index.js" charset="utf-8"></script>
+</head>
+<body>
+
+        <h1>登录成功</h1>
+
+<!--        <button onclick="logout()">退出登录</button>-->
+            <div>
+                用户：<span id="name"></span>
+                <div/>
+                所属公司：<span id="group"></span>
+                <div/>
+                角色：<span id="role"></span>
+                <div/>
+                权限操作：<span id="perm"></span>
+                <div/>
+                个人权限操作：<span id="userPerm"></span>
+                <div/>
+                可展示界面：<span id="module"></span>
+            </div>
+
+        1：<button onclick="setWarning()">设置预警值</button>
+        2：<button onclick="selectMean()">查看平均值</button>
+        3：<button onclick="selectMax()">查看最大值</button>
+        4： <button onclick="selectMin()">查看最小值</button>
+        5：<button onclick="selectReal()">查看实时数据</button>
+        6：<button onclick="warningImport()">导入</button>
+        7：<button onclick="warningExport()">导出</button>
+        8：<button onclick="addEquipment()">添加设备</button>
+        9：<button onclick="setEquipment()">设置设备</button>
+        10:<button onclick="selectUser()">用户信息</button>
+
+    </body>
+</html>

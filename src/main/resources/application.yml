@@ -1,0 +1,43 @@
+server:
+  port: 8099
+  servlet:
+    context-path: /
+    jsp:
+      init-parameters:
+        development: true
+
+spring:
+  # 配置数据源
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test_login?serverTimezone=CST&characterEncoding=utf-8
+    username: root
+    password: 123456
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html
+    mode: HTML5
+  #判断当前开发环境进行判断是否启用swagger
+#  profiles:
+#    active: pro
+
+# Mybatis相关配置
+mybatis:
+  type-aliases-package: com.example.demo.entity
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  mapper-locations: mapper/*.xml
+
+# 日志相关配置
+logging:
+  level:
+    org:
+      springframework: info
+
+
+

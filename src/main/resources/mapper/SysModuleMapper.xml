@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.SysModuleMapper" >
+
+    <resultMap id="moduleResultMap" type="com.example.demo.entity.SysModule" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="INTEGER" />
+        <result column="is_show" property="isShow" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="creation_time" property="creationTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="moduleParam">
+        me.id,
+        me.name,
+        me.code,
+        me.parent_id,
+        me.url,
+        me.is_show,
+        me.remark,
+        me.creation_time
+    </sql>
+
+    <select id="selectByRoleIds" resultMap="moduleResultMap" resultType="java.lang.Integer">
+        SELECT
+            <include refid="moduleParam"/>
+        FROM
+            sys_module me
+        JOIN sys_role_module romo ON me.id = romo.module_id
+        JOIN sys_role ro ON romo.role_id = ro.id
+        <where>
+            <if test="roleIds != null and roleIds.size > 0">
+                ro.id in
+                <foreach collection="roleIds" separator="," open="(" close=")" item="roleId">
+                  #{roleId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>
